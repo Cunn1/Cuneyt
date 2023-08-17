@@ -79,32 +79,5 @@ a = 20;
 
 console.log(a, b);
 
-var a = [1, 2, 3];
-
-
-var b = a;
-
-a.push(4);
-
-console.log(b);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Reference Veri Tipleri
 
 
