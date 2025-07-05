@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MceWEAR - Moda Alışverişinizin Adresi</title>
+    <style>
+        :root {
+            --primary: #000000;
+            --secondary: #121212;
+            --accent: #1a1a1a;
+            --text: #e0e0e0;
+            --highlight: #ffffff;
+            --price: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+        }
+        
+        header {
+            background-color: var(--secondary);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--highlight);
+        }
+        
+        .logo span {
+            color: var(--price);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: slategray;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-actions button {
+            background-color: var(--accent);
+            color: var(--text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .user-actions button:hover {
+            background-color: var(--price);
+            color: white;
+        }
+        
+        #user-greeting {
+            margin-right: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--price);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-3890-61f7-b9a5-7471896b7790/raw?se=2025-07-02T17%3A50%3A33Z&sp=r&sv=2024-08-04&sr=b&scid=feb78502-0087-56ab-83bf-ab0d42b31efd&skoid=f71d6506-3cac-498e-b62a-67f9228033a9&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-02T16%3A47%3A15Z&ske=2025-07-03T16%3A47%3A15Z&sks=b&skv=2024-08-04&sig=EGRo83d6UeCvhJUhLD/Tx06C/xRTDXVK/FTy25PTdkw%3D');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--highlight);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+        
+        .btn {
+            background-color: var(--highlight);
+            color: var(--primary);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px;
+        }
+        
+        .btn:hover {
+            background-color: var(--price);
+            color: white;
+        }
+        
+        .products {
+            padding: 4rem 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: var(--highlight);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .product-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--highlight);
+        }
+        
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--price);
+            margin-bottom: 1rem;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            padding: 0.7rem;
+            background-color: var(--accent);
+            color: var(--text);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--price);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text);
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--highlight);
+        }
+        
+        .social-icons {
+            margin-bottom: 2rem;
+        }
+        
+        .social-icons a {
+            color: var(--text);
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--highlight);
+        }
+        
+        .copyright {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal Stilleri */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        .modal-content {
+            background-color: var(--secondary);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--highlight);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--highlight);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--accent);
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: var(--text);
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--highlight);
+            color: var(--primary);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .form-submit:hover {
+            background-color: var(--price);
+            color: white;
+        }
+        
+        .form-title {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Responsive Tasarım */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 1rem 0;
+            }
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                margin: 20% auto;
+            }
+        }
+    </style>
+</head>
+<!-- Sepet Modalı -->
+<div id="cart-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-cart">&times;</span>
+        <h2 class="form-title">Sepetiniz</h2>
+        <div id="cart-items"></div>
+        <p id="total-price" style="margin-top: 1rem; font-weight: bold; text-align:center;"></p>
+    </div>
+</div>
+
+<body>
+    <header>
+        <div class="logo">MCE<span> Wear</span></div>
+        <nav>
+            <ul>
+                <li><a href="#">Ana Sayfa</a></li>
+                <li><a href="#">Ürünler</a></li>
+                <li><a href="#">Koleksiyonlar</a></li>
+                <li><a href="#">Hakkımızda</a></li>
+                <li><a href="#">İletişim</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <button id="login-btn">Giriş Yap</button>
+            <button id="register-btn">Kayıt Ol</button>
+            <span id="user-greeting" style="display:none;"></span>
+            <button id="logout-btn" style="display:none;">Çıkış Yap</button>
+            <div class="cart-icon">
+                🛒
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <h1>Lansmana Özel %20 İndirim Fırsatı</h1>
+        <p>Yeni sezon ürünlerimizle tarzınızı yenileyin. Sınırlı süreli indirimlerden yararlanın!</p>
+        <a href="#products" class="btn">Ürünleri Keşfet</a>
+    </section>
+    
+   <section class="products" id="products">
+  <h2 class="section-title">Öne Çıkan Ürünler</h2>
+  <div class="product-grid">
+    <!-- Mevcut ürünler -->
+    <div class="product-card">
+      <img src="https://cdn.akakce.com/z/columbia/columbia-puffect-iii-wm0403-348-yesil-erkek-sisme-mont.jpg" alt="Columbia Erkek Şişme Mont - Yeşil" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Erkek Şişme Mont</h3>
+        <p class="product-price">₺4,299.99</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS-bJDJh1uNkrz1nw9ghXqCFB4g-yboE2rmxuqoORfcLh6cdkDaR9kmCk7zC2L1joV_MTTtC_dXKveR2i6tEFumImHohsOVaBfdn7CrJzJf0sUYMcacVpluzg" alt="Siyah Oversize Hoodie" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Siyah Hoodie</h3>
+        <p class="product-price">₺799.99</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://cdn.modamizbir.com/Uploads/UrunResimleri/buyuk/siyah-baggy-parasut-kumas-pacasi-ayarlanabilir-erkek-esofman-alti-298859-167819295.webp" alt="Siyah Baggy Eşofman Altı" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Baggy Eşofman</h3>
+        <p class="product-price">₺599.99</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://www.ercansneakers.com.tr/ytoafydr/2023/09/Nike-Air-Force-1-Low-07-Black-Smoke-Grey.jpg" alt="Nike Air Force 1 Low Siyah Spor Ayakkabı" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Nike Air Force 1</h3>
+        <p class="product-price">₺899.99</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <!-- Yeni eklenen ürünler -->
+    <div class="product-card">
+<img src="https://seninsiten.com/images/urun1.jpg" alt="Oversize Siyah Tişört" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Oversize Tişört</h3>
+        <p class="product-price">₺399.99</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://cdn.dsmcdn.com/ty1016/product/media/images/prod/SPM/PIM/20230925/14/7d7dc047-c3a6-3564-a7d8-300db3453507/1_org.jpg" alt="Oversize Sweatshirt - Krem" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Oversize Sweatshirt</h3>
+        <p class="product-price">₺649.99</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://www.brandroom.com.tr/Uploads/UrunResimleri/thumb/tommy-hilfiger-pantolon-198.jpg" alt="Erkek Pantolon - Siyah" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Erkek Pantolon</h3>
+        <p class="product-price">₺1,299.00</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://img-lcwaikiki.mncdn.com/mnresize/600/-/pim/productimages/20231/6893664/v2/l_20231-s2ky26z8-3qt_a.jpg" alt="Kadın Crop Ceket" class="product-image">
+      <div class="product-info">
+        <h3 class="product-title">Kadın Crop Ceket</h3>
+        <p class="product-price">₺799.90</p>
+        <button class="add-to-cart">Sepete Ekle</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+    
+    <!-- Giriş Modalı -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="form-title">Giriş Yap</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">E-posta</label>
+                    <input type="email" id="login-email" required placeholder="E-posta adresinizi girin">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Şifre</label>
+                    <input type="password" id="login-password" required placeholder="Şifrenizi girin">
+                </div>
+                <button type="submit" class="form-submit">Giriş Yap</button>
+            </form>
+        </div>
+    </div>
+    <!-- Kayıt Modalı -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="form-title">Kayıt Ol</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Ad Soyad</label>
+                    <input type="text" id="register-name" required placeholder="Ad ve soyadınızı girin">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">E-posta</label>
+                    <input type="email" id="register-email" required placeholder="E-posta adresinizi girin">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Şifre</label>
+                    <input type="password" id="register-password" required placeholder="Şifrenizi oluşturun">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Şifre Tekrar</label>
+                    <input type="password" id="register-confirm" required placeholder="Şifrenizi tekrar girin">
+                </div>
+                <button type="submit" class="form-submit">Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#">Gizlilik Politikası</a>
+            <a href="#">Kullanım Koşulları</a>
+            <a href="#">İade Politikası</a>
+            <a href="#">Kargo Bilgileri</a>
+            <a href="#">SSS</a>
+        </div>
+        
+        <div class="social-icons">
+            <a href="#" aria-label="WhatsApp">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+            </a>
+            
+            <a href="#" aria-label="Facebook">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#1877F2" d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/>
+                </svg>
+            </a>
+            
+            <a href="#" aria-label="Instagram">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#E4405F" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                </svg>
+            </a>
+        </div>
+        
+        <p class="copyright">© 2025 MCE Wear Tüm hakları saklıdır.</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal işlemleri
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+            const loginModal = document.getElementById('login-modal');
+            const registerModal = document.getElementById('register-modal');
+            const closeButtons = document.querySelectorAll('.close');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userGreeting = document.getElementById('user-greeting');
+            
+            // Modal açma/kapama fonksiyonları
+            loginBtn.addEventListener('click', () => loginModal.style.display = 'block');
+            registerBtn.addEventListener('click', () => registerModal.style.display = 'block');
+            
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+            
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+            });
+
+            // Kayıt formu işlemi
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('register-name').value.trim();
+                const email = document.getElementById('register-email').value.trim().toLowerCase();
+                const password = document.getElementById('register-password').value;
+                const confirm = document.getElementById('register-confirm').value;
+                
+                if (password !== confirm) {
+                    alert('Şifreler eşleşmiyor!');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    alert('Şifre en az 6 karakter olmalıdır!');
+                    return;
+                }
+                
+                // LocalStorage'da kullanıcıları kontrol et
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // E-posta kontrolü
+                if (users.some(user => user.email === email)) {
+                    alert('Bu e-posta ile zaten kayıt olunmuş!');
+                    return;
+                }
+                
+                // Yeni kullanıcı ekle
+                const newUser = {
+                    name,
+                    email,
+                    password // Gerçek uygulamada şifre hash'lenmeli
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                
+                alert('Kayıt başarılı! Hoş geldiniz ' + name);
+                registerModal.style.display = 'none';
+                updateUserUI(name);
+                this.reset();
+            });
+             
+            // Giriş formu işlemi
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+            
+                const email = document.getElementById('login-email').value.trim().toLowerCase();
+                const password = document.getElementById('login-password').value;
+                
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    updateUserUI(user.name);
+                    loginModal.style.display = 'none';
+                    this.reset();
+                    alert('Başarıyla giriş yaptınız!');
+                } else {
+                    alert('E-posta veya şifre hatalı!');
+                }
+            });
+        
+
+            // Çıkış işlemi
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                updateUserUI();
+                alert('Başarıyla çıkış yaptınız.');
+            });
+
+            // Kullanıcı arayüzünü güncelleme fonksiyonu
+            function updateUserUI(name = null) {
+                if (name) {
+                    document.getElementById('login-btn').style.display = 'none';
+                    document.getElementById('register-btn').style.display = 'none';
+                    userGreeting.style.display = 'inline';
+                    userGreeting.textContent = `Hoş geldiniz, ${name}`;
+                    logoutBtn.style.display = 'inline';
+                } else {
+                    document.getElementById('login-btn').style.display = 'inline';
+                    document.getElementById('register-btn').style.display = 'inline';
+                    userGreeting.style.display = 'none';
+                    logoutBtn.style.display = 'none';
+                }
+            }
+
+            // Sayfa yüklendiğinde kullanıcı kontrolü
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                updateUserUI(currentUser.name);
+            }
+
+            // Sepet işlemleri
+            let cartCount = 0;
+            const cartButtons = document.querySelectorAll('.add-to-cart');
+            const cartCountElement = document.querySelector('.cart-count');
+            
+            // LocalStorage'dan sepeti yükle
+            const savedCart = localStorage.getItem('cartCount');
+            if (savedCart) {
+                cartCount = parseInt(savedCart);
+                cartCountElement.textContent = cartCount;
+            }
+            
+            cartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    cartCount++;
+                    cartCountElement.textContent = cartCount;
+                    localStorage.setItem('cartCount', cartCount.toString());
+                    
+                    cartCountElement.style.transform = 'scale(1.5)';
+                    setTimeout(() => {
+                        cartCountElement.style.transform = 'scale(1)';
+                    }, 300);
+                    
+                    const productCard = button.closest('.product-card');
+                    const productName = productCard.querySelector('.product-title').textContent;
+                    const productPrice = productCard.querySelector('.product-price').textContent;
+                    
+                    alert(`${productName} sepete eklendi!\nFiyat: ${productPrice}`);
+                });
+            });
+            
+            // Hero arkaplan parallax efekti
+            window.addEventListener('scroll', () => {
+                const hero = document.querySelector('.hero');
+                const scrollPosition = window.scrollY;
+                
+                hero.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
+            });
+            // Sepet detaylarını göster
+const cartIcon = document.querySelector('.cart-icon');
+const cartModal = document.getElementById('cart-modal');
+const closeCart = document.getElementById('close-cart');
+const cartItemsContainer = document.getElementById('cart-items');
+const totalPriceElement = document.getElementById('total-price');
+
+// Ürünleri ayrı ayrı sakla
+let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
+
+// Sepet ikonuna tıklanınca modal göster
+cartIcon.addEventListener('click', () => {
+    renderCartItems();
+    cartModal.style.display = 'block';
+});
+
+// Sepet modalını kapatma
+closeCart.addEventListener('click', () => {
+    cartModal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === cartModal) {
+        cartModal.style.display = 'none';
+    }
+});
+
+// Ürün eklenince sepete kaydet
+cartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const productCard = button.closest('.product-card');
+        const productName = productCard.querySelector('.product-title').textContent;
+        const productPrice = productCard.querySelector('.product-price').textContent;
+
+        const newProduct = {
+            name: productName,
+            price: productPrice
+        };
+
+        cartProducts.push(newProduct);
+        localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+    });
+});
+
+// Sepet içeriğini HTML olarak oluştur
+function renderCartItems() {
+    if (cartProducts.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Sepetiniz boş.</p>";
+        totalPriceElement.textContent = "";
+        return;
+    }
+
+    let html = "<ul style='list-style: none; padding: 0;'>";
+    let total = 0;
+
+    cartProducts.forEach(item => {
+        html += `<li style="margin-bottom: 1rem;">${item.name} - <strong>${item.price}</strong></li>`;
+        total += parseFloat(item.price.replace(/[^\d\.]/g, "").replace(",", "."));
+    });
+
+    html += "</ul>";
+    cartItemsContainer.innerHTML = html;
+    totalPriceElement.textContent = `Toplam: ₺${total.toFixed(2)}`;
+}
+
+        });
+
+    </script>
+</body>
+</html>  
